@@ -5,6 +5,7 @@ const json2xml = require("json2xml")
 const app = express()
 const port = process.env.PORT || 3200
 
+app.use(cors())
 app.use((req, res, next) => {
   res.setRespon = (data = {}, status = 200) => {
     const contentType = (req.headers.accept||"application/json").split("/")[1].split(";")[0].trim()
