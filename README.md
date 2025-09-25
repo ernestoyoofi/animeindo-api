@@ -43,7 +43,7 @@ Untuk API gunakan url bawaannya `https://[hosts]/api/[services...]`
   - `/api/komiku/manhua/:page` > Manhua / Komik (dengan indek)
 
 - [Komikcast (/api/komikcast)](https://animeindoapi.vercel.app/api/komikcast) | [Function](./manga/komikcast/) | [Route](./router/komikcast.js)
-- [Maid / Maga Indonesia (/api/maid)](https://animeindoapi.vercel.app/api/maid) | [Function](./manga/maid/) | [Route](./router/maid.js)
+- [Maid / Manga Indonesia (/api/maid)](https://animeindoapi.vercel.app/api/maid) | [Function](./manga/maid/) | [Route](./router/maid.js)
 
 ## 📚 Header / Query Permintaan Layanan (Opsional)
 
