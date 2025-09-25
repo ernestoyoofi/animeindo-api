@@ -1,19 +1,19 @@
 const cheerio = require("cheerio")
 const _value = require("../_value")
-const RequestHTTP = require("../../../lib/http-request")
+const { RequestHTTP } = require("../../../lib/http-request")
 
 async function Komiku_Beranda({ httpRequest = "tls-client" } = {}) {
   const urlRequest = new URL(_value.domain.main)
   const request = await RequestHTTP(urlRequest, { request_type: httpRequest })
   if(request.status !== 200) {
     return {
-      status: 400,
+      code: 400,
       message: "Respon layanan \"komiku\" buruk, mungkin ada terjadi masalah!"
     }
   }
   if(!request.isHtml) {
     return {
-      status: 500,
+      code: 500,
       message: "Tidak dapat mengambil data!"
     }
   }
@@ -36,7 +36,7 @@ async function Komiku_Beranda({ httpRequest = "tls-client" } = {}) {
     const dataInsert = {
       image: String($("img", el)?.attr("data-src")).trim(),
       title: String($(".ls2j h3", el).eq(0)?.text()).trim(),
-      type: String($("div.ls2j > span", el)?.text()).trim()?.split("  ")[0]?.split(" • ")[0],
+      type: String($("div.ls2j > span", el)?.text()).trim()?.split("  ")[0]?.split(" ")?.slice(0, -1).join(" "),
       slug: String($("div.ls2j > h3 > a", el)?.attr("href"))?.trim()?.split("/")[2],
     }
     populerManga.push(dataInsert)
@@ -47,7 +47,7 @@ async function Komiku_Beranda({ httpRequest = "tls-client" } = {}) {
     const dataInsert = {
       image: String($("img", el)?.attr("data-src")).trim(),
       title: String($(".ls2j h3", el).eq(0)?.text()).trim(),
-      type: String($("div.ls2j > span", el)?.text()).trim()?.split("  ")[0]?.split(" • ")[0],
+      type: String($("div.ls2j > span", el)?.text()).trim()?.split("  ")[0]?.split(" ")?.slice(0, -1).join(" "),
       slug: String($("div.ls2j > h3 > a", el)?.attr("href"))?.trim()?.split("/")[2],
     }
     populerManhwa.push(dataInsert)
@@ -58,7 +58,7 @@ async function Komiku_Beranda({ httpRequest = "tls-client" } = {}) {
     const dataInsert = {
       image: String($("img", el)?.attr("data-src")).trim(),
       title: String($(".ls2j h3", el).eq(0)?.text()).trim(),
-      type: String($("div.ls2j > span", el)?.text()).trim()?.split("  ")[0]?.split(" • ")[0],
+      type: String($("div.ls2j > span", el)?.text()).trim()?.split("  ")[0]?.split(" ")?.slice(0, -1).join(" "),
       slug: String($("div.ls2j > h3 > a", el)?.attr("href"))?.trim()?.split("/")[2],
     }
     populerManhua.push(dataInsert)
@@ -78,7 +78,8 @@ async function Komiku_Beranda({ httpRequest = "tls-client" } = {}) {
   let genreList = []
   $("#genr > ul > li").each((i, el) => {
     genreList.push({
-      label: String($("a", el)?.text()||"").trim(),
+      label: String(String($("a", el)?.text()||"").trim()?.split("(")[0]||"")?.trim(),
+      total: parseInt(String(String($("a", el)?.text()||"").trim()?.split("(")[1]?.split(")")[0]||"0").replace(".","")),
       slug: String($("a", el).attr("href"))?.split("/")[2]
     })
   })

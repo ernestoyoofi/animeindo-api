@@ -1,25 +1,25 @@
 const cheerio = require("cheerio")
 const _value = require("../_value")
-const RequestHTTP = require("../../../lib/http-request")
+const { RequestHTTP } = require("../../../lib/http-request")
 
 async function Komiku_InfoManga({ httpRequest = "tls-client", slug = "" } = {}) {
   const urlRequest = new URL(`/manga/${slug||""}`, _value.domain.main)
   const request = await RequestHTTP(urlRequest, { request_type: httpRequest })
   if(request.status === 404) {
     return {
-      status: 404,
+      code: 404,
       message: "Komik tidak ditemukan!"
     }
   }
   if(request.status !== 200) {
     return {
-      status: 400,
+      code: 400,
       message: "Respon layanan \"komiku\" buruk, mungkin ada terjadi masalah!"
     }
   }
   if(!request.isHtml) {
     return {
-      status: 500,
+      code: 500,
       message: "Tidak dapat mengambil data!"
     }
   }
@@ -58,9 +58,9 @@ async function Komiku_InfoManga({ httpRequest = "tls-client", slug = "" } = {}) 
     data: {
       banner: String($('head > style').text())?.split("url(")[1]?.split(")")[0]||"",
       image: String($("#Informasi > div > img").attr("src"))?.trim(),
-      title: String($("#Judul > h1")?.text()||"").trim(),
-      subtitle: String($("#Judul > p.j2")?.text()||"").trim(),
-      description: String($("#Judul > p:nth-child(3)").text()||"").trim(),
+      title: String($("#Judul > header > h1 > span")?.text()||"").trim(),
+      subtitle: String($("#Judul > header > p")?.text()||"").trim(),
+      description: String($("#Judul > p:nth-child(4)").text()||"").trim()?.replace(/  /g, ""),
       synopsis: String($("#Judul > p.desc").text()||"").trim(),
       story_background: String($("#Review > p").text()||"").trim(),
       genre: listGenre,

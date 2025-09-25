@@ -1,6 +1,6 @@
 const _value = require("../_value")
 const _valid = require("../_valid")
-const RequestHTTP = require("../../../lib/http-request")
+const { RequestHTTP } = require("../../../lib/http-request")
 const PageNumber = require("../../../lib/page-number")
 const ListingCardScrap = require("../_listing-card-scrap")
 
@@ -11,13 +11,12 @@ async function Komiku_Pencarian({ httpRequest = "tls-client", data = {
   // Validate only interger
   if(!!String(data.page).split(".")[1]) {
     return {
-      status: 400,
+      code: 400,
       message: "Halaman hanya bersifat interger!"
     }
   }
   // Build URL
   const numberPg = PageNumber(data.page).length > 1? `/page${PageNumber(data.page)}`:"/"
-  console.log(numberPg)
   const buildQuery = new URLSearchParams({
     post_type: String(_value.form_type[data?.orderby]||"manga").trim(),
     s: String(data.search||""),
@@ -26,13 +25,13 @@ async function Komiku_Pencarian({ httpRequest = "tls-client", data = {
   const request = await RequestHTTP(urlRequest, { request_type: httpRequest })
   if(request.status !== 200) {
     return {
-      status: 400,
+      code: 400,
       message: "Respon layanan \"komiku\" buruk, mungkin ada terjadi masalah!"
     }
   }
   if(!request.isHtml) {
     return {
-      status: 500,
+      code: 500,
       message: "Tidak dapat mengambil data!"
     }
   }
