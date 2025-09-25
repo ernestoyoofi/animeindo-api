@@ -47,7 +47,7 @@ route.get("/pencarian", async (req, res) => {
 route.get("/pencarian/:page", async (req, res) => {
   const paddingPage = Number(req.params?.page)
   if(paddingPage < 1) {
-    return res.redirect(`${req.baseUrl}/pencarian`) // Redirect
+    return res.redirect(`${req.baseUrl}/pencarian?search=${req.query?.search||""}`) // Redirect
   }
   const requestData = await Komiku_Pencarian({
     httpRequest: req.query?.request||undefined,
@@ -65,7 +65,7 @@ route.get("/search", async (req, res) => {
 route.get("/search/:page", async (req, res) => {
   const paddingPage = Number(req.params?.page)
   if(paddingPage < 1) {
-    return res.redirect(`${req.baseUrl}/search`) // Redirect
+    return res.redirect(`${req.baseUrl}/search?search=${req.query?.search||""}`) // Redirect
   }
   const requestData = await Komiku_Pencarian({
     httpRequest: req.query?.request||undefined,
