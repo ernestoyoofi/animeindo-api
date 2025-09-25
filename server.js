@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 const KomikuRoute = require("./router/komiku")
 app.use("/api/komiku", KomikuRoute)
 
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
   console.log(req)
   const hostGlobal = req.headers.host
   res.setRespon({

@@ -1,3 +1,4 @@
+// ----------- Module -----------
 const Komiku_BacaManga = require("../manga/komiku/scrap/baca")
 const Komiku_Beranda = require("../manga/komiku/scrap/beranda")
 const Komiku_Genre = require("../manga/komiku/scrap/genre")
@@ -13,13 +14,13 @@ route.get("/", async (req, res) => {
   return res.setRespon(requestData||{}, requestData?.code||200)
 })
 
+// ----------- Manga -----------
 route.get("/info/:slug", async (req, res) => {
   const requestData = await Komiku_InfoManga({
     httpRequest: req.query?.request||undefined, slug: (req.params?.slug||"")
   })
   return res.setRespon(requestData||{}, requestData?.code||200)
 })
-
 route.get("/baca/:slug/", async (req, res) => {
   const requestData = await Komiku_BacaManga({
     httpRequest: req.query?.request||undefined, slug: (req.params?.slug||""),
