@@ -1,5 +1,4 @@
 function CreateRouteInfo(objMapRoute, hostPath = "/", globalHost = "localhost:3200") {
-  console.log(`http://localhost${hostPath}`)
   const mapping = Array.from(objMapRoute.stack)
   const routes = mapping.map((a, i) => ({
     path: new URL(`${hostPath}${a.route.path}`, `https://${globalHost}${hostPath}`).href,
